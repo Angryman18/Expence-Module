@@ -1,35 +1,20 @@
-import "react-date-range/dist/styles.css"; // main style file
-import "react-date-range/dist/theme/default.css"; // theme css file
-import Table from "./Table";
-
+// Package Import
 import { useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
+// Comp Import
+import Table from "./Table";
+import Form from "./Form";
 import Modal from "./Modal";
-// import { DateRange } from "react-date-range";
 
 const Expence = () => {
-  const [date, setDate] = useState({
-    startDate: "",
-    endDate: "",
-  });
+  const defaultStartDate = new Date()
+  const defaultEndDate = defaultStartDate.setDate(defaultStartDate.getDate() + 7)
+  const [dateRange, setDateRange] = useState([defaultStartDate, defaultEndDate]);
+  const [startDate, endDate] = dateRange;
 
   const [popup, setPopup] = useState(false);
-
-
-  //   const [state, setState] = useState([
-  //     {
-  //       startDate: new Date(),
-  //       endDate: null,
-  //       key: "selection",
-  //     },
-  //   ]);
-
-  //   const [select, setSelect] = useState(false);
-
-  //   const selectHandler = (e) => {
-  //     e.preventDefault();
-  //     setSelect(!select);
-  //   };
-
 
   const closeModal = (e) => {
     e.preventDefault();
@@ -37,8 +22,9 @@ const Expence = () => {
   };
 
   const getData = (item) => {
-      setPopup(true)
-  }
+    setPopup(true);
+    console.log(item);
+  };
 
   return (
     <>
@@ -49,31 +35,17 @@ const Expence = () => {
           </div>
           <div className="flex flex-col md:flex-row md:justify-between md:items-center mx-2">
             <div className="flex md:flex-row">
-              {/* <p className="m-2">Start Date: </p> */}
-              <input
-                onChange={(e) =>
-                  setDate({ ...date, startDate: e.target.value })
-                }
-                type="date"
-                className="border border-gray-100 bg-info-100 rounded-lg px-2 m-2  font-normal text-sm"
+              <DatePicker
+                placeholderText="Select Date Range"
+                className="my-1 px-2 py-1 border-2 border-mercuryGray focus:border-info-300 rounded-lg outline-0"
+                selectsRange={true}
+                startDate={startDate}
+                endDate={endDate}
+                onChange={(update) => {
+                  setDateRange(update);
+                }}
+                isClearable={true}
               />
-              <p className="m-2">To</p>
-              <input
-                type="date"
-                className="border border-gray-100 bg-info-100 rounded-lg px-2 m-2 font-normal text-sm"
-              />
-              {/* <div>
-              <button onClick={selectHandler}>Select Date</button>
-              {select && (
-                <DateRange
-                  editableDateInputs={true}
-                  onChange={(item) => setState([item.selection])}
-                  moveRangeOnFirstSelection={false}
-                  ranges={state}
-                  className=""
-                />
-              )}
-            </div> */}
             </div>
             <button
               onClick={(e) => setPopup(true)}
@@ -85,7 +57,11 @@ const Expence = () => {
           <Table sendData={getData} />
         </div>
       </div>
-      {popup && <Modal closeModal={closeModal} />}
+      {popup && (
+        <Modal closeModal={closeModal}>
+          <Form closeModal={closeModal} />
+        </Modal>
+      )}
     </>
   );
 };

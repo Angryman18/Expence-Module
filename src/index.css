@@ -8,4 +8,18 @@
 
 body {
   font-family: poppins;
+  overflow-x: hidden;
+}
+
+.page-button {
+  padding: 4px 10px;
+  border: 1px solid rgba(0,0,0,0.2);
+  color: dodgerblue;
+  font-size: 0.7rem;
+
+  cursor: pointer;
+}
+
+#select-item:first-child {
+  display: none;
 }
