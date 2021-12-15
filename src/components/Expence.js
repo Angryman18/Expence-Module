@@ -9,9 +9,12 @@ import Form from "./Form";
 import Modal from "./Modal";
 
 const Expence = () => {
-  const defaultStartDate = new Date()
-  const defaultEndDate = defaultStartDate.setDate(defaultStartDate.getDate() + 7)
-  const [dateRange, setDateRange] = useState([defaultStartDate, defaultEndDate]);
+  const defaultStartDate = new Date();
+  const defaultEndDate = new Date().setDate(defaultStartDate.getDate() + 7);
+  const [dateRange, setDateRange] = useState([
+    defaultStartDate,
+    defaultEndDate,
+  ]);
   const [startDate, endDate] = dateRange;
 
   const [popup, setPopup] = useState(false);
@@ -36,6 +39,7 @@ const Expence = () => {
           <div className="flex flex-col md:flex-row md:justify-between md:items-center mx-2">
             <div className="flex md:flex-row">
               <DatePicker
+                dateFormat="dd/MM/yyyy"
                 placeholderText="Select Date Range"
                 className="my-1 px-2 py-1 border-2 border-mercuryGray focus:border-info-300 rounded-lg outline-0"
                 selectsRange={true}

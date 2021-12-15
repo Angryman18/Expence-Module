@@ -47,7 +47,7 @@ const Form = ({ closeModal }) => {
       <form className="px-2 py-4 text-sm lg:text-base">
         <div className="text-xs text-red">{error && error}</div>
         <select
-          className="my-1 px-2 py-1 border-2 border-mercuryGray focus:border-info-300 rounded-lg outline-0"
+          className="placeholder:text-sm my-1 px-2 py-1 bg-white border-2 border-mercuryGray focus:border-info-300 rounded-lg outline-0"
           placeholder="Select Category"
           style={{ width: "100%" }}
         >
@@ -70,11 +70,12 @@ const Form = ({ closeModal }) => {
           <Input
             type="number"
             placeholder="Enter Amount"
-            style={{ width: "80%", marginRight: "10px" }}
+            style={{ width: "100%", marginRight: "10px" }}
           />
           <DatePicker
-            placeholderText="Select Expence Date"
-            className="my-1 px-2 py-1 border-2 border-mercuryGray focus:border-info-300 rounded-lg outline-0"
+            dateFormat="dd/MM/yyyy"
+            placeholderText="Expence Date DD/MM/YYYY"
+            className="placeholder:text-sm my-1 w-full px-2 py-1 border-2 border-mercuryGray focus:border-info-300 rounded-lg outline-0"
             selected={startDate}
             onChange={(date) => setStartDate(date)}
           />

@@ -1,4 +1,4 @@
-const Modal = ({children, closeModal}) => {
+const Modal = ({ children, closeModal }) => {
   return (
     <>
       <div
