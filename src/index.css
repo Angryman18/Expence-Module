@@ -16,10 +16,13 @@ body {
   border: 1px solid rgba(0,0,0,0.2);
   color: dodgerblue;
   font-size: 0.7rem;
-
   cursor: pointer;
 }
 
 #select-item:first-child {
   display: none;
+}
+
+.table-head {
+  
 }

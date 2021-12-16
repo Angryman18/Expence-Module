@@ -1,12 +1,17 @@
 // Package Import
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
+import format from "date-fns/format";
+// import { CircularProgress } from "@mui/material";
 
 // Comp Import
 import TableFooter from "./TableFooter";
 import TableCol from "./TableCol";
 
-const Table = ({ sendData }) => {
+const getAllTransactionURL = process.env.REACT_APP_GET_ALL_EXPENCE;
+const token = process.env.REACT_APP_TOKEN;
+
+const Table = ({ openPopup, date }) => {
   // Initial Data from API
   const [tableData, setTableData] = useState([]);
   // Loading State
@@ -14,7 +19,7 @@ const Table = ({ sendData }) => {
   // Error Handling while API Call
   const [error, setError] = useState("");
   // Per Page Content
-  const [show, setShow] = useState(2);
+  const [show, setShow] = useState(10);
 
   const [pagination, setPagination] = useState({
     start: 0,
@@ -31,29 +36,44 @@ const Table = ({ sendData }) => {
     });
   };
 
-  const changePage = (start, end) => {
-    setPagination({
-      start: start,
-      end: end,
-      totalPage: Math.ceil(tableData.length / show),
-    });
-  };
+  const changePage = useCallback(
+    (start, end) => {
+      setPagination({
+        start: start,
+        end: end,
+        totalPage: Math.ceil(tableData.length / show),
+      });
+    },
+    [show, tableData]
+  );
 
   const editHandler = (e, id) => {
     e.preventDefault();
     const item = tableData.filter((item) => {
       return item.id === id;
     });
-    sendData(item);
+    openPopup();
   };
 
   useEffect(() => {
-    (async () => {
+    const { startDate, endDate } = date;
+
+    if (!startDate || !endDate) {
+      return;
+    }
+
+    (async (startDate, endDate) => {
       setError("");
+      const formData = new FormData();
+      formData.append("startDate", format(startDate, "dd/MM/yyyy"));
+      formData.append("endDate", format(endDate, "dd/MM/yyyy"));
       try {
-        const getData = await axios(
-          "https://jsonplaceholder.typicode.com/users"
-        );
+        const getData = await axios.post(getAllTransactionURL, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setTableData(getData.data);
         setPagination({
           start: 0,
@@ -65,15 +85,15 @@ const Table = ({ sendData }) => {
       } finally {
         setLoading(false);
       }
-    })();
-  }, []);
+    })(startDate, endDate);
+  }, [show, date]);
 
   return (
     <>
-      <div className="my-3 md:my-2 overscroll-auto overflow-scroll overflow-y-hidden sm:overflow-hidden">
-        <table className="shadow-xl shadow-gray-600 table-auto w-full min-w-min">
+      <div className="my-3 md:my-2 overflow-scroll overflow-y-hidden sm:overflow-hidden">
+        <table className="shadow-xl shadow-gray-600 table-auto w-[640px] sm:w-full">
           <thead>
-            <tr className="text-xs md:text-sm text-left border-b-2 border-inactiveGray bg-lightGray text-ShuttleGray">
+            <tr className="w-auto text-xs md:text-sm text-left border-b-2 border-inactiveGray bg-lightGray text-ShuttleGray">
               <th className="w-1/6 py-2 pl-4">CATEGORY</th>
               <th className="w-1/6">TITLE</th>
               <th className="w-2/6">DESCRIPTION</th>
@@ -95,33 +115,6 @@ const Table = ({ sendData }) => {
                     <TableCol key={idx} editHandler={editHandler} {...item} />
                   );
                 })}
-            {/* {!loading &&
-              tableData.length !== 0 &&
-              tableData
-                .slice(pagination.start, pagination.end)
-                .map((item, idx) => {
-                  if (idx + 1 > show) {
-                    return null;
-                  }
-                  return (
-                    <tr
-                      key={idx}
-                      className="text-left text-xs md:text-sm border-b-2 border-inactiveGray"
-                    >
-                      <td className="w-2/12 pl-4 p-2">{item.name}</td>
-                      <td className="w-2/12">{item.username}</td>
-                      <td className="w-3/12">{item.email}</td>
-                      <td className="w-3/12">{item.website}</td>
-                      <td className="w-2/12">{item.company.name}</td>
-                      <td className="w-1/12 pr-5">
-                        <Button
-                          onClick={(e) => editHandler(e, item.id)}
-                          text="Edit"
-                        />
-                      </td>
-                    </tr>
-                  );
-                })} */}
             {/* if not loading and no tableData and got Error */}
             {!loading && error && tableData.length === 0 ? (
               <tr>
@@ -147,7 +140,8 @@ const Table = ({ sendData }) => {
             {loading ? (
               <tr>
                 <td colSpan="6" className="text-center">
-                  <div className="flex justify-center items-center">
+                  <div className="flex justify-center items-center my-2">
+                    {/* <CircularProgress /> */}
                     <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
                   </div>
                 </td>

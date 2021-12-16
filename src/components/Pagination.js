@@ -4,40 +4,34 @@ const Pagination = ({ paginate, postperpage, totalPage }) => {
   const [page, setPage] = useState(1);
 
   useEffect(() => {
-    if (page > totalPage) {
-      setPage(1);
+    if (totalPage && page > totalPage) {
+      setPage(totalPage);
     }
     const end = page * postperpage;
     const start = end - postperpage;
     paginate(start, end);
-  }, [page, postperpage]);
+  }, [page, postperpage, totalPage, paginate]);
 
   return (
     <div className="flex text-blue mx-4">
-      <a
-        onClick={() => setPage(1)}
-        className="page-button"
-      >
+      <p onClick={() => setPage(1)} className="page-button">
         <i className="fas fa-angle-double-left"></i>
-      </a>
-      <a
+      </p>
+      <p
         onClick={() => setPage((pre) => (pre !== 1 ? pre - 1 : pre))}
         className="page-button"
       >
         <i className="fas fa-angle-left"></i>
-      </a>
-      <a
+      </p>
+      <p
         onClick={() => setPage((pre) => (pre < totalPage ? pre + 1 : pre))}
         className="page-button"
       >
         <i className="fas fa-angle-right"></i>
-      </a>
-      <a
-        onClick={() => setPage(totalPage)}
-        className="page-button"
-      >
-       <i className="fas fa-angle-double-right"></i>
-      </a>
+      </p>
+      <p onClick={() => setPage(totalPage)} className="page-button">
+        <i className="fas fa-angle-double-right"></i>
+      </p>
     </div>
   );
 };

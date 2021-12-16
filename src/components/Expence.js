@@ -2,6 +2,7 @@
 import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+// import { Button } from "@mui/material";
 
 // Comp Import
 import Table from "./Table";
@@ -24,9 +25,9 @@ const Expence = () => {
     setPopup(false);
   };
 
-  const getData = (item) => {
+  const openPopup = () => {
     setPopup(true);
-    console.log(item);
+    
   };
 
   return (
@@ -51,6 +52,11 @@ const Expence = () => {
                 isClearable={true}
               />
             </div>
+            {/* MUI  */}
+            {/* <Button onClick={(e) => setPopup(true)} variant="contained">
+              Add
+            </Button> */}
+
             <button
               onClick={(e) => setPopup(true)}
               className="duration-75 bg-navy-100 text-xs border px-6 py-2 text-white font-bold rounded-lg"
@@ -58,7 +64,7 @@ const Expence = () => {
               ADD
             </button>
           </div>
-          <Table sendData={getData} />
+          <Table date={{startDate, endDate}} openPopup={openPopup} />
         </div>
       </div>
       {popup && (
