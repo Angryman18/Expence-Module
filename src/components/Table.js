@@ -52,8 +52,8 @@ const Table = ({ openPopup, date, sendData }) => {
     const item = tableData.filter((item) => {
       return item.id === id;
     });
-    openPopup(e, {edit: true});
-    sendData(item)
+    openPopup(e, { edit: true });
+    sendData(item);
   };
 
   useEffect(() => {
@@ -154,7 +154,7 @@ const Table = ({ openPopup, date, sendData }) => {
       <TableFooter
         showHandler={showHandler}
         show={show}
-        totalPage={pagination.totalPage}
+        data={{pagination, totalItem: tableData.length}}
         changePage={changePage}
       />
     </>

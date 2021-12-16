@@ -2,7 +2,6 @@
 import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-// import { Button } from "@mui/material";
 
 // Comp Import
 import Table from "./Table";
@@ -37,10 +36,6 @@ const Expence = () => {
   const getData = (item) => {
     setEditItem(item)
   }
-
-  // const openPopup = (item) => {
-  //   setPopup(true);
-  // };
 
   return (
     <>

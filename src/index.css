@@ -23,6 +23,15 @@ body {
   display: none;
 }
 
-.table-head {
-  
+.modal-open {
+  animation: open 0.2s ease;
+}
+
+@keyframes open {
+  0% {
+    top: 22%;
+  }
+  100% {
+    top: 25%;
+  }
 }

@@ -24,7 +24,6 @@ const Edit = ({ closeModal, editItem }) => {
     expDateToDisplay: editItem.expDateToDisplay,
   });
 
-
   const [expDate, setDate] = useState(
     new Date(formData.expDateToDisplay.split("/").reverse().join("-"))
   );
@@ -120,30 +119,20 @@ const Edit = ({ closeModal, editItem }) => {
       <form className="px-2 py-4 text-sm lg:text-base">
         <div className="text-xs text-red">{error && error}</div>
         <select
-          className="placeholder:text-sm my-1 px-2 py-1 bg-white border-2 border-mercuryGray focus:border-info-300 rounded-lg outline-0"
+          disabled={loading}
+          className="placeholder:text-sm my-1 px-2 py-2 bg-white border-2 border-mercuryGray focus:border-info-300 rounded-lg outline-0"
           placeholder="Select Category"
           style={{ width: "100%" }}
           name="categoryId"
           onChange={(e) => getFormData(e)}
-          defaultValue={+formData.categoryId}
+          value={formData.categoryId}
         >
-          {/* <option id="select-item" value="fasd">
-            Select Category
-          </option> */}
           {categories.map((item) => {
-            if (item.id === formData.categoryId) {
-              return (
-                <option key={item.id} selected={true}>
-                  {item.category}
-                </option>
-              );
-            } else {
-              return (
-                <option value={item.id} key={item.id}>
-                  {item.category}
-                </option>
-              );
-            }
+            return (
+              <option value={item.id} key={item.id}>
+                {item.category}
+              </option>
+            );
           })}
         </select>
         <Input
@@ -174,7 +163,7 @@ const Edit = ({ closeModal, editItem }) => {
           <DatePicker
             dateFormat="dd/MM/yyyy"
             placeholderText="Expence Date DD/MM/YYYY"
-            className="placeholder:text-sm my-1 w-full px-2 py-1 border-2 border-mercuryGray focus:border-info-300 rounded-lg outline-0"
+            className="placeholder:text-sm my-1 w-full px-2 py-2 border-2 border-mercuryGray focus:border-info-300 rounded-lg outline-0"
             selected={expDate}
             onChange={(date) => setDate(date)}
             isClearable={true}

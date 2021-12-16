@@ -12,7 +12,6 @@ const addExpenceURL = process.env.REACT_APP_ADD_EXPENCE;
 const token = process.env.REACT_APP_TOKEN;
 
 const Add = ({ closeModal }) => {
-  const [edit, setEdit] = useState(true);
   const [categories, setCategories] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -23,15 +22,12 @@ const Add = ({ closeModal }) => {
     amount: "",
   });
 
-  
-
   // Input Data
   const [Date, setDate] = useState(null);
 
   const getFormData = (e) => {
     setFormData((pre) => ({ ...pre, [e.target.name]: e.target.value }));
   };
-
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -88,7 +84,7 @@ const Add = ({ closeModal }) => {
         requesting && setCategories(categories.data);
       })
       .catch(() => {
-        setError("Failed to Fetch Categories")
+        setError("Failed to Fetch Categories");
       });
     return () => {
       requesting = false;
@@ -107,7 +103,7 @@ const Add = ({ closeModal }) => {
       <form className="px-2 py-4 text-sm lg:text-base">
         <div className="text-xs text-red">{error && error}</div>
         <select
-          className="placeholder:text-sm my-1 px-2 py-1 bg-white border-2 border-mercuryGray focus:border-info-300 rounded-lg outline-0"
+          className="placeholder:text-sm my-1 px-2 py-2 bg-white border-2 border-mercuryGray focus:border-info-300 rounded-lg outline-0"
           placeholder="Select Category"
           style={{ width: "100%" }}
           name="categoryId"
@@ -150,7 +146,7 @@ const Add = ({ closeModal }) => {
           <DatePicker
             dateFormat="dd/MM/yyyy"
             placeholderText="Expence Date DD/MM/YYYY"
-            className="placeholder:text-sm my-1 w-full px-2 py-1 border-2 border-mercuryGray focus:border-info-300 rounded-lg outline-0"
+            className="placeholder:text-sm my-1 w-full px-2 py-2 border-2 border-mercuryGray focus:border-info-300 rounded-lg outline-0"
             selected={Date}
             onChange={(date) => setDate(date)}
             isClearable={true}
