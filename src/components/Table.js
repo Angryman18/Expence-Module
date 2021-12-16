@@ -11,7 +11,7 @@ import TableCol from "./TableCol";
 const getAllTransactionURL = process.env.REACT_APP_GET_ALL_EXPENCE;
 const token = process.env.REACT_APP_TOKEN;
 
-const Table = ({ openPopup, date }) => {
+const Table = ({ openPopup, date, sendData }) => {
   // Initial Data from API
   const [tableData, setTableData] = useState([]);
   // Loading State
@@ -52,7 +52,8 @@ const Table = ({ openPopup, date }) => {
     const item = tableData.filter((item) => {
       return item.id === id;
     });
-    openPopup();
+    openPopup(e, {edit: true});
+    sendData(item)
   };
 
   useEffect(() => {

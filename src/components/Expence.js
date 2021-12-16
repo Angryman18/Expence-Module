@@ -6,8 +6,9 @@ import "react-datepicker/dist/react-datepicker.css";
 
 // Comp Import
 import Table from "./Table";
-import Form from "./Form";
+import Add from "./Add";
 import Modal from "./Modal";
+import Edit from "./Edit";
 
 const Expence = () => {
   const defaultStartDate = new Date();
@@ -17,18 +18,29 @@ const Expence = () => {
     defaultEndDate,
   ]);
   const [startDate, endDate] = dateRange;
+  const [actions, setActions] = useState({});
 
   const [popup, setPopup] = useState(false);
+  const [editItem, setEditItem] = useState()
 
   const closeModal = (e) => {
     e.preventDefault();
     setPopup(false);
   };
 
-  const openPopup = () => {
+  const actionHandler = (e, objs) => {
+    e.preventDefault();
+    setActions(objs)
     setPopup(true);
-    
   };
+
+  const getData = (item) => {
+    setEditItem(item)
+  }
+
+  // const openPopup = (item) => {
+  //   setPopup(true);
+  // };
 
   return (
     <>
@@ -52,24 +64,20 @@ const Expence = () => {
                 isClearable={true}
               />
             </div>
-            {/* MUI  */}
-            {/* <Button onClick={(e) => setPopup(true)} variant="contained">
-              Add
-            </Button> */}
-
             <button
-              onClick={(e) => setPopup(true)}
+              onClick={(e) => actionHandler(e, {add: true})}
               className="duration-75 bg-navy-100 text-xs border px-6 py-2 text-white font-bold rounded-lg"
             >
               ADD
             </button>
           </div>
-          <Table date={{startDate, endDate}} openPopup={openPopup} />
+          <Table date={{ startDate, endDate }} sendData={getData} openPopup={actionHandler} />
         </div>
       </div>
       {popup && (
         <Modal closeModal={closeModal}>
-          <Form closeModal={closeModal} />
+          {actions?.add && <Add closeModal={closeModal} />}
+          {actions?.edit && <Edit editItem={editItem[0]} closeModal={closeModal} />}
         </Modal>
       )}
     </>
